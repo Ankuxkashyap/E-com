@@ -4,14 +4,14 @@ import jwt from 'jsonwebtoken'
 
 export const userRigester = async (req, res) => {
     try{
-        const { email , name , password} = req.body;
+        const { email , name , password,isAdmin} = req.body;
         const user = await User .findOne({ email }); 
         if (user) {     
             return res.status(400).json({ message: "User already exists" });
         }
     const hashPassword = await bcrypt.hash(password,10)
 
-    const newUser = new User({ name, email, password: hashPassword });
+    const newUser = new User({ name, email, isAdmin,password: hashPassword });
     await newUser.save()
     res.status(200).json({message:"User Created "});
     }
@@ -24,6 +24,7 @@ export const userLogin = async(req,res)=>{
     try{
     const {email,password} = req.body;
     const user = await User.findOne({email});
+
     if(!user){
         return res.status(400).json({message:"User not found"});
     }
