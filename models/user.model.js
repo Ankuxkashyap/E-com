@@ -21,7 +21,21 @@ const userSchema = new mongoose.Schema({
     isAdmin: {
         type: Boolean,
         default: false,
-    }
+    },
+    cart: [
+        {
+          productId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Product',
+            required: true,
+          },
+          quantity: {
+            type: Number,
+            required: true,
+            default: 1,
+          },
+        },
+    ],
 });
 
 export const User = mongoose.model("user",userSchema);
